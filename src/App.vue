@@ -13,8 +13,5 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import SideBar from './components/SideBar.vue'
-
-const a = ref(10)
 </script>

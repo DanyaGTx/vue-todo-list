@@ -1,5 +1,7 @@
 <template>
-  <div class="w-[310px] h-[200px] mt-[30px] p-[25px] rounded-[20px] bg-white">
+  <div
+    class="w-[310px] m-auto min-h-[200px] mt-[20px] p-[25px] rounded-[20px] bg-white"
+  >
     <div class="flex items-center justify-between">
       <div class="flex gap-2">
         <img
@@ -10,11 +12,12 @@
         }}</span>
       </div>
       <div>
-        <img
-          @click="deleteTodo(props.todo.id)"
-          class="cursor-pointer"
-          src="../assets/todo/edit.svg"
-          alt="edit"
+        <EditTodoDropdown
+          @deleteTodo="deleteTodo"
+          :todo="props.todo"
+          :categoriesList="props.categoriesList"
+          @editedTodo="editedTodo"
+          @doneTodo="doneTodo"
         />
       </div>
     </div>
@@ -23,27 +26,43 @@
       <p class="text-[14px] mt-[5px]">
         {{ props.todo.description }}
       </p>
+
+      <p class="text-[12px] mt-[10px]">
+        Created at {{ props.todo.creationDate }}
+      </p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-type TODO = {
-  id: number
-  category: string
-  title: string
-  description: string
-}
+import { ref } from 'vue'
+import EditTodoDropdown from './EditTodoDropdown.vue'
+import { TODO, CategoryInList } from '../types/types'
+
+// const isTodoEditingDialogOpen = ref(false)
 
 const props = defineProps<{
+  allTodos: TODO[]
   todo: TODO
+  categoriesList: CategoryInList[]
 }>()
 
 const emit = defineEmits<{
   (e: 'deleteTodo', id: number): void
+  (e: 'closeTodoDialog'): void
+  (e: 'editedTodo', todo: TODO): void
+  (e: 'doneTodo', id: number): void
 }>()
 
 const deleteTodo = (id: number) => {
   emit('deleteTodo', id)
+}
+
+const editedTodo = (todo: TODO) => {
+  emit('editedTodo', todo)
+}
+
+const doneTodo = (id: number) => {
+  emit('doneTodo', id)
 }
 </script>
