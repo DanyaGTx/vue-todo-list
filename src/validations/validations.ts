@@ -23,7 +23,7 @@ export const checkTitleValidation = () => {
           if (value?.length <= 50) {
             return true
           } else {
-            return 'Name must be less than 5s0 characters.'
+            return 'Name must be less than 50 characters.'
           }
         },
       ]

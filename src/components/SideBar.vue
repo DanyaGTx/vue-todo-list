@@ -9,8 +9,8 @@
 
     <div class="w-full mt-[30px]">
       <div class="mb-[20px]">
-        <router-link :to="{ name: 'dashboard' }"
-          ><div class="pl-[45px] pr-[10px] pt-[10px] pb-[10px] flex">
+        <router-link :to="{ name: 'dashboard' }">
+          <div class="pl-[45px] pr-[10px] pt-[10px] pb-[10px] flex">
             <img
               class="mr-[15px]"
               src="../assets/sidebar/dashboard.svg"
@@ -18,8 +18,8 @@
             />
 
             Dashboard
-          </div></router-link
-        >
+          </div>
+        </router-link>
       </div>
       <div class="mb-[20px]">
         <router-link :to="{ name: 'board' }"

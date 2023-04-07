@@ -13,10 +13,12 @@
       </div>
       <div>
         <EditTodoDropdown
-          @deleteTodo="deleteTodo"
           :todo="props.todo"
+          :boardType="props.boardType"
           :categoriesList="props.categoriesList"
+          @deleteTodo="deleteTodo"
           @editedTodo="editedTodo"
+          @doTodo="doTodo"
           @doneTodo="doneTodo"
         />
       </div>
@@ -39,18 +41,18 @@ import { ref } from 'vue'
 import EditTodoDropdown from './EditTodoDropdown.vue'
 import { TODO, CategoryInList } from '../types/types'
 
-// const isTodoEditingDialogOpen = ref(false)
-
 const props = defineProps<{
   allTodos: TODO[]
   todo: TODO
   categoriesList: CategoryInList[]
+  boardType: string
 }>()
 
 const emit = defineEmits<{
   (e: 'deleteTodo', id: number): void
   (e: 'closeTodoDialog'): void
   (e: 'editedTodo', todo: TODO): void
+  (e: 'doTodo', id: number): void
   (e: 'doneTodo', id: number): void
 }>()
 
@@ -61,8 +63,11 @@ const deleteTodo = (id: number) => {
 const editedTodo = (todo: TODO) => {
   emit('editedTodo', todo)
 }
-
 const doneTodo = (id: number) => {
   emit('doneTodo', id)
+}
+
+const doTodo = (id: number) => {
+  emit('doTodo', id)
 }
 </script>

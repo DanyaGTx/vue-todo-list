@@ -9,11 +9,16 @@
       />
     </template>
     <v-list>
-      <v-list-item>
+      <v-list-item v-if="boardType === 'todo'">
         <v-list-item-title
           class="cursor-pointer"
           @click="doneTodo(props.todo.id)"
           >Done</v-list-item-title
+        >
+      </v-list-item>
+      <v-list-item v-else-if="boardType === 'doneTodo'">
+        <v-list-item-title class="cursor-pointer" @click="doTodo(props.todo.id)"
+          >To do</v-list-item-title
         >
       </v-list-item>
       <v-list-item>
@@ -48,11 +53,13 @@ const isTodoEditingDialogOpen = ref(false)
 const props = defineProps<{
   todo: TODO
   categoriesList: CategoryInList[]
+  boardType: string
 }>()
 
 const emit = defineEmits<{
   (e: 'deleteTodo', id: number): void
   (e: 'editedTodo', todo: TODO): void
+  (e: 'doTodo', id: number): void
   (e: 'doneTodo', id: number): void
 }>()
 
@@ -74,5 +81,8 @@ const closeTodoDialog = () => {
 
 const doneTodo = (id: number) => {
   emit('doneTodo', id)
+}
+const doTodo = (id: number) => {
+  emit('doTodo', id)
 }
 </script>

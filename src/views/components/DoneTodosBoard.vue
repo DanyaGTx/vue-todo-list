@@ -1,9 +1,9 @@
 <template>
   <div
-    class="w-[360px] h-[640px] overflow-x-hidden bg-[#EEF2F5] rounded-[18px] mt-[30px] pb-[10px]"
+    class="w-[360px] h-[640px] overflow-x-hidden bg-[#CCF5D1] rounded-[18px] mt-[30px] pb-[10px]"
   >
-    <div class="flex justify-between bg-[#EEF2F5] p-[24px] sticky top-0">
-      <h3 class="font-medium text-[16px]">To do</h3>
+    <div class="flex justify-between bg-[#CCF5D1] p-[24px] sticky top-0">
+      <h3 class="font-medium text-[16px]">Done todos</h3>
       <div class="flex gap-4">
         <img
           @click="openTodoGialog"
@@ -12,9 +12,10 @@
           alt="add"
         />
         <EditAllTodos
-          @completeAllTodos="completeAllTodos"
-          @deleteAllTodos="deleteAllTodos"
           :boardType="props.boardType"
+          @completeAllTodos="completeAllTodos"
+          @uncompleteAllTodos="uncompleteAllTodos"
+          @deleteAllTodos="deleteAllTodos"
           :todos="props.todos"
         />
       </div>
@@ -22,14 +23,14 @@
     <div v-if="todos.length">
       <TodoItem
         :categoriesList="categoriesList"
-        :boardType="props.boardType"
         @deleteTodo="deleteTodoFromList"
         v-for="todo in todos"
         :key="todo.id"
         :todo="todo"
         :allTodos="todos"
         @editedTodo="editedTodo"
-        @doneTodo="doneTodo"
+        @doTodo="doTodo"
+        :boardType="props.boardType"
       />
     </div>
     <div class="text-center text-[20px]" v-else>Nothing to do</div>
@@ -71,8 +72,9 @@ const emit = defineEmits<{
   (e: 'addNewTodo', addNewTodo: TODO, type: string): void
   (e: 'deleteAllTodos'): void
   (e: 'editTodo', id: number, todo: TODO, type: string): void
-  (e: 'doneTodo', id: number): void
+  (e: 'doTodo', id: number): void
   (e: 'completeAllTodos'): void
+  (e: 'uncompleteAllTodos'): void
 }>()
 
 const openTodoGialog = () => {
@@ -82,7 +84,7 @@ const openTodoGialog = () => {
 
 const deleteTodoFromList = (id: number) => {
   const deletedTodos = props.todos.filter((todo) => todo.id !== id)
-  emit('deletedTodos', deletedTodos, 'todo')
+  emit('deletedTodos', deletedTodos, 'doneTodo')
 }
 
 const addNewTodo = (todo: TodoFields) => {
@@ -95,10 +97,14 @@ const addNewTodo = (todo: TodoFields) => {
     description: todo.description,
     creationDate: dateOfTodoCreation,
   }
-  emit('addNewTodo', newTodo, 'todo')
+  emit('addNewTodo', newTodo, 'doneTodo')
 
   const stringifyTodos = JSON.stringify(props.todos)
-  saveTodosToLocalStorage('todos', stringifyTodos)
+  saveTodosToLocalStorage('doneTodos', stringifyTodos)
+}
+
+const completeAllTodos = () => {
+  emit('completeAllTodos')
 }
 
 const deleteAllTodos = () => {
@@ -108,16 +114,16 @@ const deleteAllTodos = () => {
 const editedTodo = (todo: TODO) => {
   const findTodoInArray = (todoInArray: TODO) => todoInArray.id === todo.id
   const myIndex = props.todos.findIndex(findTodoInArray)
-  emit('editTodo', myIndex, todo, 'todo')
+  emit('editTodo', myIndex, todo, 'doneTodo')
   const stringifyTodos = JSON.stringify(props.todos)
-  saveTodosToLocalStorage('todos', stringifyTodos)
+  saveTodosToLocalStorage('doneTodos', stringifyTodos)
 }
 
-const doneTodo = (id: number) => {
-  emit('doneTodo', id)
+const doTodo = (id: number) => {
+  emit('doTodo', id)
 }
 
-const completeAllTodos = () => {
-  emit('completeAllTodos')
+const uncompleteAllTodos = () => {
+  emit('uncompleteAllTodos')
 }
 </script>

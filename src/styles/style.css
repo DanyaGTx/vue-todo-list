@@ -11,3 +11,8 @@ body {
   background-color: #ecf4fd;
   width: 100%;
 }
+
+.disableCompleting {
+  pointer-events: none;
+  color: gray;
+}
